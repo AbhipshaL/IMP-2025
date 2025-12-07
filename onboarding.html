@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteSize - Onboarding</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- DESIGN SYSTEM VARIABLES --- */
+        :root {
+            --col-primary-brown: #3E2B26;
+            --col-bg-crema: #F5F1E8;
+            --col-sec-latte: #C7BBAE;
+            --col-accent-sage: #6D7F42;
+            --col-accent-berry: #944540;
+            --col-text-charcoal: #2E2E2E;
+            --col-white: #FFFFFF;
+            --col-input-bg: #EDF2F7;
+            --font-heading: 'Merriweather', serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--col-bg-crema);
+            color: var(--col-text-charcoal);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header { padding: 40px 0 20px 0; display: flex; justify-content: center; }
+        .logo { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 900; font-size: 1.5rem; color: var(--col-primary-brown); }
+        .logo-icon { width: 32px; height: 32px; background-color: var(--col-primary-brown); border-radius: 8px; }
+
+        .wizard-container { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; max-width: 700px; margin: 0 auto; width: 100%; }
+
+        .progress-container { width: 100%; max-width: 500px; height: 8px; background-color: #E6E0D4; border-radius: 4px; margin-bottom: 60px; overflow: hidden; opacity: 0; transition: opacity 0.3s; }
+        .progress-bar { height: 100%; background-color: var(--col-accent-sage); width: 0%; transition: width 0.4s ease; border-radius: 4px; }
+
+        .step { display: none; width: 100%; animation: fadeIn 0.4s ease; text-align: center; }
+        .step.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1 { font-size: 2.5rem; text-align: center; margin-bottom: 16px; color: var(--col-primary-brown); font-weight: 700; }
+        p.subtitle { text-align: center; margin-bottom: 40px; color: var(--col-text-charcoal); opacity: 0.7; font-size: 1rem; }
+
+        .input-group { margin-bottom: 16px; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; }
+        input[type="text"], input[type="email"], input[type="password"], select { width: 100%; max-width: 500px; padding: 16px 20px; border: 1px solid #CBD5E0; border-radius: 12px; font-size: 1.1rem; font-family: var(--font-body); background-color: var(--col-input-bg); outline: none; transition: border-color 0.2s; color: var(--col-text-charcoal); }
+        input:focus { border-color: var(--col-primary-brown); background-color: #fff; }
+
+        .auth-footer { margin-top: 24px; font-size: 0.9rem; color: var(--col-text-charcoal); }
+        .link-btn { background: none; border: none; color: var(--col-accent-sage); font-weight: 700; cursor: pointer; text-decoration: underline; font-size: 0.9rem; }
+        .error-msg { color: var(--col-accent-berry); font-size: 0.9rem; margin-top: 8px; display: none; }
+
+        .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 600px; margin: 0 auto; }
+        .option-card { background-color: var(--col-white); border: 2px solid var(--col-sec-latte); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s; font-weight: 500; }
+        .option-card:hover { border-color: var(--col-primary-brown); transform: translateY(-2px); }
+        .option-card.selected { background-color: #F4F6F0; border-color: var(--col-accent-sage); color: var(--col-accent-sage); font-weight: 700; }
+
+        .slider-container { width: 100%; max-width: 500px; margin: 0 auto; text-align: center; padding: 10px 0; }
+        .price-display { font-size: 3.5rem; font-family: var(--font-heading); color: var(--col-primary-brown); margin-bottom: 24px; font-weight: 700; height: 60px; display: flex; align-items: center; justify-content: center; }
+        input[type=range].price-slider { -webkit-appearance: none; width: 100%; background: transparent; padding: 0; border: none; }
+        input[type=range].price-slider:focus { outline: none; }
+        input[type=range].price-slider::-webkit-slider-runnable-track { width: 100%; height: 8px; cursor: pointer; background: var(--col-sec-latte); border-radius: 4px; }
+        input[type=range].price-slider::-webkit-slider-thumb { height: 32px; width: 32px; border-radius: 50%; background: var(--col-accent-sage); cursor: pointer; -webkit-appearance: none; margin-top: -12px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border: 3px solid #F4F6F0; transition: transform 0.1s; }
+        input[type=range].price-slider::-webkit-slider-thumb:hover { transform: scale(1.1); }
+        .slider-labels { display: flex; justify-content: space-between; margin-top: 16px; font-size: 0.9rem; color: var(--col-text-charcoal); opacity: 0.7; font-weight: 500; }
+
+        .nav-buttons { display: flex; justify-content: flex-end; align-items: center; margin-top: 40px; width: 100%; max-width: 500px; }
+        .btn { padding: 14px 40px; border-radius: 30px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; }
+        .btn-back { background: transparent; color: var(--col-text-charcoal); opacity: 0.6; margin-right: auto; }
+        .btn-back:hover { opacity: 1; }
+        .btn-next { background-color: var(--col-primary-brown); color: var(--col-white); }
+        .btn-next:hover { opacity: 0.9; transform: translateY(-1px); }
+        .hidden { visibility: hidden; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <div class="logo-icon"></div>
+            ByteSize
+        </div>
+    </header>
+
+    <div class="wizard-container">
+        
+        <div class="progress-container" id="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <form id="onboarding-form">
+            <div class="step active" id="step-1" data-step="1">
+                <h1 id="auth-title">Welcome to ByteSize</h1>
+                <p class="subtitle" id="auth-subtitle">Create an account to begin your journey.</p>
+                <div class="input-group">
+                    <input type="email" id="auth-username" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="auth-password" placeholder="Password" required>
+                </div>
+                <div class="input-group" id="confirm-password-group">
+                    <input type="password" id="auth-confirm-password" placeholder="Confirm Password">
+                </div>
+                <div class="auth-footer">
+                    <span id="auth-footer-text">Already have an account?</span>
+                    <button type="button" class="link-btn" id="toggle-auth">Log In</button>
+                </div>
+            </div>
+
+            <div class="step" id="step-2" data-step="2">
+                <h1>What is the name of your Cafe?</h1>
+                <p class="subtitle">This will be your identity on the platform.</p>
+                <input type="text" id="cafe-name" placeholder="e.g. Kim's Cafe">
+            </div>
+
+            <div class="step" id="step-3" data-step="3">
+                <h1>Where are you located?</h1>
+                <p class="subtitle">Helps us tailor insights to your area.</p>
+                <input type="text" id="cafe-location" placeholder="e.g. FLAME University">
+            </div>
+
+            <div class="step" id="step-4" data-step="4">
+                <h1>Which stage describes you best?</h1>
+                <p class="subtitle">Select one option.</p>
+                <div class="grid-options" id="stage-options">
+                    <div class="option-card" onclick="selectOption('stage-options', this)">Just an Idea</div>
+                    <div class="option-card" onclick="selectOption('stage-options', this)">Planning to Launch</div>
+                    <div class="option-card" onclick="selectOption('stage-options', this)">Recently Opened</div>
+                    <div class="option-card" onclick="selectOption('stage-options', this)">Established Business</div>
+                </div>
+                <input type="hidden" id="cafe-stage">
+            </div>
+
+            <div class="step" id="step-5" data-step="5">
+                <h1>What is the primary aesthetic?</h1>
+                <p class="subtitle">Choose the vibe that fits best.</p>
+                <div class="grid-options" id="aesthetic-options">
+                    <div class="option-card" onclick="selectOption('aesthetic-options', this)">Cozy</div>
+                    <div class="option-card" onclick="selectOption('aesthetic-options', this)">Modern</div>
+                    <div class="option-card" onclick="selectOption('aesthetic-options', this)">Industrial</div>
+                    <div class="option-card" onclick="selectOption('aesthetic-options', this)">Minimalist</div>
+                    <div class="option-card" onclick="selectOption('aesthetic-options', this)">Rustic</div>
+                    <div class="option-card" onclick="selectOption('aesthetic-options', this)">Vintage</div>
+                </div>
+                <input type="hidden" id="cafe-aesthetic">
+            </div>
+
+            <div class="step" id="step-6" data-step="6">
+                <h1>What is your price range?</h1>
+                <p class="subtitle">Slide to select your average tier.</p>
+                <div class="slider-container">
+                    <div class="price-display" id="price-display">₹₹</div>
+                    <input type="range" min="1" max="4" value="2" class="price-slider" id="price-slider">
+                    <div class="slider-labels"><span>Affordable</span><span>Premium</span></div>
+                </div>
+                <input type="hidden" id="cafe-pricing" value="₹₹">
+            </div>
+        </form>
+
+        <div class="nav-buttons">
+            <button class="btn btn-back hidden" id="btn-back">Back</button>
+            <button class="btn btn-next" id="btn-next">Sign Up</button>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        // --- CONFIGURATION ---
+        const SUPABASE_URL = 'https://mkonvzqmdxqeqqcqhmvc.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1rb252enFtZHhxZXFxY3FobXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1ODI1MzksImV4cCI6MjA4MDE1ODUzOX0.Vo1-zOQMYfFIO4ka_7lk0XSjyxGlz6IlHFND0FvWG4o';
+        const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            let currentStep = 1;
+            const totalSteps = 6;
+            let isLoginMode = false;
+            let tempUserEmail = ""; 
+
+            const nextBtn = document.getElementById('btn-next');
+            const backBtn = document.getElementById('btn-back');
+            const progressBar = document.getElementById('progress-bar');
+            const progressContainer = document.getElementById('progress-container');
+            const toggleAuthBtn = document.getElementById('toggle-auth');
+            
+            const emailInput = document.getElementById('auth-username');
+            const passInput = document.getElementById('auth-password');
+
+            // --- AUTH TOGGLE ---
+            toggleAuthBtn.addEventListener('click', () => {
+                isLoginMode = !isLoginMode;
+                emailInput.value = '';
+                passInput.value = '';
+                document.getElementById('auth-confirm-password').value = '';
+                
+                document.getElementById('auth-title').innerText = isLoginMode ? "Welcome Back" : "Welcome to ByteSize";
+                document.getElementById('auth-subtitle').innerText = isLoginMode ? "Log in to continue." : "Create an account to begin.";
+                document.getElementById('confirm-password-group').style.display = isLoginMode ? 'none' : 'block';
+                nextBtn.innerText = isLoginMode ? "Log In" : "Sign Up";
+                document.getElementById('auth-footer-text').innerText = isLoginMode ? "New here?" : "Already have an account?";
+                toggleAuthBtn.innerText = isLoginMode ? "Create Account" : "Log In";
+            });
+
+            // --- NAVIGATION ---
+            nextBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+
+                // PHASE 1: TESTER AUTH
+                if (currentStep === 1) {
+                    const email = emailInput.value.trim();
+                    const password = passInput.value.trim();
+
+                    if (!email) return alert("Please enter an email address.");
+                    if (!password) return alert("Please enter a password.");
+
+                    // Store email for saving later
+                    tempUserEmail = email; 
+
+                    nextBtn.disabled = true;
+                    nextBtn.innerText = "Verifying...";
+                    
+                    // Fake delay
+                    setTimeout(() => {
+                        nextBtn.disabled = false;
+                        currentStep++;
+                        updateStep();
+                    }, 600); 
+                    return;
+                }
+
+                // PHASE 2: QUESTIONS
+                if (currentStep < totalSteps) {
+                    if(currentStep === 2 && !document.getElementById('cafe-name').value) return alert("Enter Cafe Name");
+                    if(currentStep === 3 && !document.getElementById('cafe-location').value) return alert("Enter Location");
+                    currentStep++;
+                    updateStep();
+                } 
+                // PHASE 3: SUBMIT
+                else if (currentStep === totalSteps) {
+                    nextBtn.disabled = true;
+                    nextBtn.innerText = "Brewing Profile...";
+
+                    const profileData = {
+                        cafe_name: document.getElementById('cafe-name').value,
+                        location: document.getElementById('cafe-location').value,
+                        stage: document.getElementById('cafe-stage').value,
+                        aesthetic: document.getElementById('cafe-aesthetic').value,
+                        price_range: document.getElementById('cafe-pricing').value,
+                        user_id: tempUserEmail
+                    };
+
+                    try {
+                        const { error } = await client.from('profile').insert([profileData]);
+                        if (error) console.warn("Supabase Error:", error.message);
+                        
+                        // CRITICAL: Save email to browser memory for Profile Page
+                        localStorage.setItem('activeUserEmail', tempUserEmail);
+
+                        window.location.href = "index.html";
+                    } catch (err) {
+                        localStorage.setItem('activeUserEmail', tempUserEmail);
+                        window.location.href = "index.html";
+                    }
+                }
+            });
+
+            backBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentStep > 1) { currentStep--; updateStep(); }
+            });
+
+            function updateStep() {
+                document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+                document.getElementById(`step-${currentStep}`).classList.add('active');
+                if (currentStep === 1) {
+                    progressContainer.style.opacity = '0'; backBtn.classList.add('hidden');
+                } else {
+                    progressContainer.style.opacity = '1'; backBtn.classList.remove('hidden');
+                    const p = ((currentStep - 1) / (totalSteps - 1)) * 100;
+                    progressBar.style.width = `${p}%`;
+                }
+                if (currentStep === 1) nextBtn.innerText = isLoginMode ? "Log In" : "Sign Up";
+                else if (currentStep === totalSteps) nextBtn.innerText = "Finish";
+                else nextBtn.innerText = "Next";
+            }
+
+            window.selectOption = function(containerId, element) {
+                const container = document.getElementById(containerId);
+                const inputId = containerId === 'stage-options' ? 'cafe-stage' : 'cafe-aesthetic';
+                Array.from(container.children).forEach(child => child.classList.remove('selected'));
+                element.classList.add('selected');
+                document.getElementById(inputId).value = element.innerText;
+            };
+
+            const slider = document.getElementById('price-slider');
+            if(slider) {
+                slider.addEventListener('input', (e) => {
+                    const val = e.target.value;
+                    let text = '₹';
+                    if(val == 2) text = '₹₹';
+                    if(val == 3) text = '₹₹₹';
+                    if(val == 4) text = '₹₹₹₹';
+                    document.getElementById('price-display').innerText = text;
+                    document.getElementById('cafe-pricing').value = text;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

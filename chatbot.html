@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Frontend</title>
+    
+    <style>
+        /* Basic reset */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Main chat container */
+        .chat-container {
+            width: 100%;
+            max-width: 500px;
+            height: 70vh;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Chat header */
+        .chat-header {
+            background-color: #007bff;
+            color: white;
+            padding: 16px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Chat window where messages appear */
+        .chat-window {
+            flex-grow: 1; /* Allows this area to fill available space */
+            padding: 16px;
+            overflow-y: auto; /* Adds scrolling for old messages */
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* Adds space between messages */
+        }
+
+        /* Individual message styling */
+        .message {
+            padding: 10px 14px;
+            border-radius: 18px;
+            max-width: 75%;
+            line-height: 1.5;
+        }
+
+        /* Message from the bot */
+        .message.bot {
+            background-color: #e9ecef;
+            color: #333;
+            align-self: flex-start; /* Aligns to the left */
+        }
+
+        /* Message from the user */
+        .message.user {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end; /* Aligns to the right */
+        }
+
+        /* Form for typing a new message */
+        .chat-input-form {
+            display: flex;
+            padding: 12px;
+            border-top: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+
+        /* Text input field */
+        #message-input {
+            flex-grow: 1;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 1rem;
+            margin-right: 10px;
+            outline: none; /* Removes outline on focus */
+        }
+
+        #message-input:focus {
+            border-color: #007bff;
+        }
+
+        /* Send button */
+        #send-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="chat-container">
+        
+        <header class="chat-header">
+            My Chatbot
+        </header>
+
+        <section class="chat-window" id="chat-window">
+            <div class="message bot">
+                Hello! How can I help you today?
+            </div>
+        </section>
+
+        <form class="chat-input-form" id="chat-form">
+            <input 
+                type="text" 
+                id="message-input" 
+                placeholder="Type your message..."
+                aria-label="Message input"
+                autocomplete="off">
+            <button type="submit" id="send-button" aria-label="Send message">Send</button>
+        </form>
+
+    </main>
+
+    <script>
+        // Wait for the DOM to be fully loaded before running the script
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // Get references to the DOM elements
+            const chatWindow = document.getElementById("chat-window");
+            const chatForm = document.getElementById("chat-form");
+            const messageInput = document.getElementById("message-input");
+
+            // Add event listener for form submission
+            chatForm.addEventListener("submit", (event) => {
+                // Prevent the form from reloading the page
+                event.preventDefault();
+
+                // Get the user's message and trim whitespace
+                const userMessage = messageInput.value.trim();
+
+                // If the message isn't empty, process it
+                if (userMessage) {
+                    // 1. Add the user's message to the chat window
+                    addMessage(userMessage, "user");
+
+                    // 2. Clear the input field
+                    messageInput.value = "";
+
+                    // 3. Simulate a bot response after a short delay
+                    setTimeout(() => {
+                        simulateBotResponse(userMessage);
+                    }, 1000); // 1-second delay
+                }
+            });
+
+            /**
+             * Adds a new message to the chat window.
+             * @param {string} text - The message text.
+             * @param {string} sender - Who sent the message ("user" or "bot").
+             */
+            function addMessage(text, sender) {
+                // Create a new message div
+                const messageElement = document.createElement("div");
+                messageElement.classList.add("message", sender); // e.g., "message user"
+                messageElement.textContent = text;
+
+                // Add the message to the chat window
+                chatWindow.appendChild(messageElement);
+
+                // Automatically scroll to the bottom
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }
+
+            /**
+             * Simulates a response from the bot.
+             * In a real app, this would be an API call to a backend.
+             */
+            function simulateBotResponse(userMessage) {
+                let botReply = "";
+
+                // Simple logic for the demo
+                if (userMessage.toLowerCase().includes("hello")) {
+                    botReply = "Hi there! How can I assist you?";
+                } else if (userMessage.toLowerCase().includes("help")) {
+                    botReply = "Sure, I can help. What seems to be the problem?";
+                } else {
+                    botReply = "Thanks for your message. I'm just a demo bot, but I've received: '" + userMessage + "'";
+                }
+
+                // Add the bot's reply to the chat window
+                addMessage(botReply, "bot");
+            }
+        });
+    </script>
+
+</body>
+</html>
