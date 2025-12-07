@@ -31,7 +31,7 @@ except Exception as e:
 
 # Use the stable model name. If you have specific access to 2.0, change this back.
 # 'gemini-1.5-flash' is the safest, fastest option for public use right now.
-MODEL_NAME = 'gemini-1.5-flash' 
+MODEL_NAME = 'gemini-2.0-flash' 
 
 # --- 2. DATA LOADING FUNCTIONS ---
 
