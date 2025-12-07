@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - ByteSize</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --col-primary-brown: #3E2B26;
+            --col-bg-crema: #F5F1E8;
+            --col-sec-latte: #C7BBAE;
+            --col-accent-sage: #6D7F42;
+            --col-white: #FFFFFF;
+            --font-heading: 'Merriweather', serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--col-bg-crema);
+            color: var(--col-primary-brown);
+            font-family: var(--font-body);
+            min-height: 100vh;
+        }
+
+        /* --- HEADER (LIGHT THEME - Matches About Us) --- */
+        header {
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            padding: 20px 0; 
+            z-index: 1000;
+            background-color: var(--col-bg-crema); /* Light Background */
+            border-bottom: 1px solid rgba(62, 43, 38, 0.05);
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Logo is Brown in Light Theme */
+        .logo { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 900; font-size: 1.25rem; color: var(--col-primary-brown); }
+        .logo-icon { width: 32px; height: 32px; background-color: var(--col-primary-brown); border-radius: 8px; }
+
+        /* Nav Links are Brown */
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a { font-size: 0.95rem; color: var(--col-primary-brown); opacity: 0.8; font-weight: 500; text-decoration: none; transition: opacity 0.2s; }
+        .nav-links a:hover { opacity: 1; }
+
+        /* Active State (Light Pill) */
+        .nav-active {
+            background-color: rgba(62, 43, 38, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: var(--col-primary-brown) !important;
+        }
+
+        /* --- PROFILE BUTTON (LIGHT THEME) --- */
+        .profile-icon-btn {
+            display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(62, 43, 38, 0.3); /* Brown Border */
+            color: var(--col-primary-brown) !important;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+        .profile-icon-btn:hover, .profile-icon-btn.nav-active {
+            background-color: var(--col-primary-brown);
+            color: var(--col-white) !important; /* White icon on hover */
+            transform: scale(1.05);
+        }
+        .profile-icon-btn svg { width: 20px; height: 20px; }
+
+
+        /* --- PROFILE CONTENT --- */
+        .profile-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+            margin-top: 140px; 
+            margin-bottom: 60px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .avatar-large {
+            width: 100px;
+            height: 100px;
+            background-color: var(--col-sec-latte);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--col-white);
+            font-family: var(--font-heading);
+        }
+
+        .user-info h1 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+
+        .user-info p {
+            font-size: 1rem;
+            opacity: 0.7;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .detail-card {
+            background: var(--col-white);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(62, 43, 38, 0.05);
+            border: 1px solid rgba(62, 43, 38, 0.1);
+        }
+
+        .label { text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; color: #888; margin-bottom: 8px; font-weight: 600; }
+        .value { font-size: 1.25rem; font-weight: 600; color: var(--col-primary-brown); }
+        .value.highlight { color: var(--col-accent-sage); }
+
+        .loading-state { text-align: center; margin-top: 100px; font-size: 1.5rem; opacity: 0.5; }
+
+        .logout-btn {
+            margin-top: 40px;
+            padding: 12px 24px;
+            border: 2px solid var(--col-primary-brown);
+            background: transparent;
+            color: var(--col-primary-brown);
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .logout-btn:hover { background: var(--col-primary-brown); color: var(--col-white); }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <div class="logo-icon"></div>
+                    ByteSize
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About Us</a>
+                    <a href="#">Data Insights</a>
+                    <a href="#">Simulation</a>
+                    
+                    <a href="profile.html" class="profile-icon-btn nav-active" title="My Cafe Profile">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="profile-wrapper">
+        <div id="loading" class="loading-state">Loading Profile...</div>
+
+        <div id="profile-content" style="display: none;">
+            <div class="profile-header">
+                <div class="avatar-large" id="avatar-initial">?</div>
+                <div class="user-info">
+                    <h1 id="display-cafe-name">Cafe Name</h1>
+                    <p><span id="display-email">email@example.com</span></p>
+                </div>
+            </div>
+
+            <div class="details-grid">
+                <div class="detail-card">
+                    <div class="label">Location</div>
+                    <div class="value" id="display-location">--</div>
+                </div>
+                <div class="detail-card">
+                    <div class="label">Current Stage</div>
+                    <div class="value highlight" id="display-stage">--</div>
+                </div>
+                <div class="detail-card">
+                    <div class="label">Aesthetic Vibe</div>
+                    <div class="value" id="display-aesthetic">--</div>
+                </div>
+                <div class="detail-card">
+                    <div class="label">Price Range</div>
+                    <div class="value" id="display-price">--</div>
+                </div>
+            </div>
+
+            <button class="logout-btn" onclick="logout()">Log Out</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // --- PASTE KEYS HERE ---
+        const SUPABASE_URL = 'https://mkonvzqmdxqeqqcqhmvc.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1rb252enFtZHhxZXFxY3FobXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1ODI1MzksImV4cCI6MjA4MDE1ODUzOX0.Vo1-zOQMYfFIO4ka_7lk0XSjyxGlz6IlHFND0FvWG4o';
+        
+        const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function loadProfile() {
+            const activeUser = localStorage.getItem('activeUserEmail');
+            if (!activeUser) { window.location.href = 'landing.html'; return; }
+
+            const { data, error } = await client
+                .from('profile')
+                .select('*')
+                .eq('user_id', activeUser)
+                .order('created_at', { ascending: false })
+                .limit(1)
+                .single();
+
+            if (data) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('profile-content').style.display = 'block';
+                document.getElementById('display-cafe-name').innerText = data.cafe_name;
+                document.getElementById('display-email').innerText = data.user_id;
+                document.getElementById('display-location').innerText = data.location;
+                document.getElementById('display-stage').innerText = data.stage;
+                document.getElementById('display-aesthetic').innerText = data.aesthetic;
+                document.getElementById('display-price').innerText = data.price_range;
+                
+                const initial = data.cafe_name ? data.cafe_name.charAt(0).toUpperCase() : '?';
+                document.getElementById('avatar-initial').innerText = initial;
+            } else {
+                 document.getElementById('loading').innerText = "Profile not found.";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('activeUserEmail');
+            window.location.href = 'landing.html';
+        }
+        document.addEventListener('DOMContentLoaded', loadProfile);
+    </script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - ByteSize</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- DESIGN SYSTEM VARIABLES --- */
+        :root {
+            --col-primary-brown: #3E2B26;
+            --col-bg-crema: #F5F1E8;
+            --col-sec-latte: #C7BBAE;
+            --col-accent-sage: #6D7F42;
+            --col-accent-berry: #944540;
+            --col-text-charcoal: #2E2E2E;
+            --col-white: #FFFFFF;
+            
+            --font-heading: 'Merriweather', serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--col-bg-crema);
+            color: var(--col-text-charcoal);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER (LIGHT THEME) --- */
+        header {
+            position: fixed; top: 0; width: 100%; padding: 20px 0; z-index: 1000;
+            background-color: var(--col-bg-crema);
+            border-bottom: 1px solid rgba(62, 43, 38, 0.05);
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        
+        .logo { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 900; font-size: 1.25rem; color: var(--col-primary-brown); }
+        .logo-icon { width: 32px; height: 32px; background-color: var(--col-primary-brown); border-radius: 8px; }
+        
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a { font-size: 0.95rem; color: var(--col-primary-brown); opacity: 0.8; font-weight: 500; text-decoration: none; transition: opacity 0.2s; }
+        .nav-links a:hover { opacity: 1; }
+        
+        .nav-active { 
+            background-color: rgba(62, 43, 38, 0.1); 
+            padding: 8px 16px; 
+            border-radius: 20px; 
+            font-weight: 600; 
+            color: var(--col-primary-brown) !important;
+        }
+
+        /* --- UPDATED PROFILE BUTTON (LARGER) --- */
+        .profile-icon-btn {
+            display: flex; align-items: center; justify-content: center;
+            width: 52px;        /* Increased size */
+            height: 52px;       /* Increased size */
+            border-radius: 50%;
+            border: 2px solid rgba(62, 43, 38, 0.3); /* Thicker border */
+            color: var(--col-primary-brown);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+        .profile-icon-btn:hover {
+            background-color: var(--col-primary-brown);
+            color: var(--col-white) !important;
+            transform: scale(1.05);
+        }
+        .profile-icon-btn svg { 
+            width: 28px;        /* Larger Icon */
+            height: 28px;       /* Larger Icon */
+            stroke-width: 2;    /* Bolder Lines */
+        }
+
+
+        /* --- SCROLL TRACK & CONTENT --- */
+        .scroll-track { height: 350vh; position: relative; }
+        .sticky-stage { position: sticky; top: 0; height: 100vh; width: 100%; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+        .team-cluster { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100vh; pointer-events: none; }
+        .member-circle { position: absolute; width: 150px; height: 150px; border-radius: 50%; background-color: #ddd; background-size: cover; background-position: center; background-repeat: no-repeat; box-shadow: 0 10px 20px rgba(62, 43, 38, 0.25); border: 4px solid var(--col-white); transition: transform 0.1s linear; top: 50%; left: 50%; margin-top: -75px; margin-left: -75px; pointer-events: auto; cursor: pointer; z-index: 10; }
+        .member-circle:hover { z-index: 100; }
+
+        .member-info { position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 220px; background-color: var(--col-white); padding: 16px; border-radius: 12px; box-shadow: 0 8px 24px rgba(62, 43, 38, 0.2); text-align: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; pointer-events: none; }
+        .member-info::after { content: ''; position: absolute; bottom: 100%; left: 50%; margin-left: -8px; border-width: 8px; border-style: solid; border-color: transparent transparent var(--col-white) transparent; }
+        .member-circle:hover .member-info { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(5px); }
+        .member-info h3 { font-family: var(--font-heading); font-size: 1.1rem; color: var(--col-primary-brown); margin-bottom: 4px; line-height: 1.2; }
+        .member-info p { font-family: var(--font-body); font-size: 0.85rem; color: var(--col-text-charcoal); margin: 0; line-height: 1.4; }
+        .member-info span.label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-top: 8px; margin-bottom: 2px; }
+
+        .about-content-card { position: absolute; bottom: -100vh; width: 90%; max-width: 900px; background-color: var(--col-white); border-radius: 24px; padding: 0; box-shadow: 0 -20px 60px rgba(62, 43, 38, 0.15); overflow: hidden; display: flex; flex-direction: column; opacity: 0; transform: scale(0.95); transition: opacity 0.5s, transform 0.5s; z-index: 50; }
+        .group-photo-placeholder { width: 100%; height: 400px; background-color: #E0E0E0; background-size: cover; background-position: center; background-repeat: no-repeat; border-bottom: 1px solid #eee; }
+        .text-content { padding: 50px 60px; text-align: center; }
+        .text-content h1 { font-family: var(--font-heading); font-size: 3rem; color: var(--col-primary-brown); margin-bottom: 24px; }
+        .text-content p { font-size: 1.1rem; color: var(--col-text-charcoal); line-height: 1.8; max-width: 700px; margin: 0 auto; }
+        .scroll-hint { position: absolute; bottom: 40px; text-align: center; width: 100%; color: var(--col-primary-brown); opacity: 0.6; animation: float 2s infinite; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        @media (max-width: 768px) {
+            .team-cluster { transform: translate(-50%, -50%) scale(0.5); }
+            .text-content { padding: 30px; }
+            .text-content h1 { font-size: 2rem; }
+            .member-info { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <div class="logo-icon"></div>
+                    ByteSize
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="#" class="nav-active">About Us</a>
+                    <a href="#">Data Insights</a>
+                    <a href="#">Simulation</a>
+                    
+                    <a href="profile.html" class="profile-icon-btn" title="My Cafe Profile">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="scroll-track">
+        <div class="sticky-stage">
+            
+            <div class="team-cluster">
+                <div class="member-circle" id="m1" style="background-image: url('abhipsha.jpeg');"><div class="member-info"><h3>Abhipsha Luitel</h3><span class="label">Major</span><p>Computer Science and Design</p></div></div>
+                <div class="member-circle" id="m2" style="background-image: url('ankita.jpg');"><div class="member-info"><h3>Ankita</h3><span class="label">Major</span><p>Marketing</p><span class="label">Minor</span><p>Film and Television</p></div></div>
+                <div class="member-circle" id="m3" style="background-image: url('nishika.jpg');"><div class="member-info"><h3>Nishika Gupte</h3><span class="label">Major</span><p>Advertising and Branding</p><span class="label">Minor</span><p>Psychology</p></div></div>
+                <div class="member-circle" id="m4" style="background-image: url('kimberly.jpeg');"><div class="member-info"><h3>Kimberly Dias</h3><span class="label">Major</span><p>Digital Marketing</p><span class="label">Minor</span><p>Psychology</p></div></div>
+                <div class="member-circle" id="m5" style="background-image: url('yogini.jpg');"><div class="member-info"><h3>Yogini Sriram</h3><span class="label">Major</span><p>Advertising and Branding</p><span class="label">Minor</span><p>International Studies</p></div></div>
+                <div class="member-circle" id="m6" style="background-image: url('arunima.jpg');"><div class="member-info"><h3>Arunima Srikant</h3><span class="label">Major</span><p>Data Science and Economics</p></div></div>
+            </div>
+
+            <div class="about-content-card" id="about-card">
+                <div class="group-photo-placeholder" style="background-image: url('group.jpeg');"></div>
+                <div class="text-content">
+                    <h1>About Us</h1>
+                    <p>We are a passionate group of six innovators, blending expertise in data science, design, and business strategy. Our mission is to empower cafe owners with actionable insights, turning raw data into the secret ingredient for success.</p>
+                </div>
+            </div>
+
+            <div class="scroll-hint" id="scroll-hint">Scroll to meet the team</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const members = [ document.getElementById('m1'), document.getElementById('m2'), document.getElementById('m3'), document.getElementById('m4'), document.getElementById('m5'), document.getElementById('m6') ];
+            const aboutCard = document.getElementById('about-card');
+            const scrollHint = document.getElementById('scroll-hint');
+            const startPos = [ { x: -480, y: 250 }, { x: -280, y: 50 }, { x: -90,  y: -120 }, { x: 90,   y: -120 }, { x: 280,  y: 50 }, { x: 480,  y: 250 } ];
+            const endPos = [ { x: 0, y: -110 }, { x: 110, y: -50 }, { x: 110, y: 70 }, { x: 0, y: 130 }, { x: -110, y: 70 }, { x: -110, y: -50 } ];
+
+            function updateAnimation() {
+                const scrollY = window.scrollY;
+                const windowHeight = window.innerHeight;
+                const trackHeight = document.querySelector('.scroll-track').offsetHeight - windowHeight;
+                const progress = Math.min(scrollY / trackHeight, 1);
+                let clusterProgress = Math.min(progress / 0.6, 1);
+                
+                members.forEach((member, index) => {
+                    const start = startPos[index]; const end = endPos[index];
+                    const currentX = start.x + (end.x - start.x) * clusterProgress;
+                    const currentY = start.y + (end.y - start.y) * clusterProgress;
+                    member.style.transform = `translate(${currentX}px, ${currentY}px)`;
+                });
+
+                if (progress > 0.6) {
+                    scrollHint.style.opacity = 0;
+                    let revealProgress = Math.min((progress - 0.6) / 0.3, 1);
+                    const yOffset = (1 - revealProgress) * 100; 
+                    aboutCard.style.bottom = "10%";
+                    aboutCard.style.transform = `translateY(${yOffset}%) scale(${0.95 + (0.05 * revealProgress)})`;
+                    aboutCard.style.opacity = revealProgress; 
+                    document.querySelector('.team-cluster').style.opacity = Math.max(0.1, 1 - revealProgress);
+                } else {
+                    aboutCard.style.transform = `translateY(100%) scale(0.95)`;
+                    aboutCard.style.opacity = 0;
+                    document.querySelector('.team-cluster').style.opacity = 1;
+                    scrollHint.style.opacity = 0.6;
+                }
+            }
+            window.addEventListener('scroll', updateAnimation);
+            updateAnimation();
+        });
+    </script>
+</body>
+</html>

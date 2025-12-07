@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - ByteSize</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- DESIGN SYSTEM VARIABLES --- */
+        :root {
+            --col-primary-brown: #3E2B26;
+            --col-bg-crema: #F5F1E8;
+            --col-sec-latte: #C7BBAE;
+            --col-white: #FFFFFF;
+
+            --font-heading: 'Merriweather', serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--col-primary-brown);
+            color: var(--col-text-charcoal);
+            font-family: var(--font-body);
+            height: 100vh;
+            overflow: hidden; /* No scroll */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- FIXED BACKGROUND --- */
+        #fixed-background {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2; 
+            background-image: url('image.png'); /* Assumes same image as index */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.6; /* Slightly dimmed for text contrast */
+        }
+        
+        #overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(62, 43, 38, 0.4); /* Brown overlay */
+            z-index: -1;
+        }
+
+        /* --- CENTER CONTENT --- */
+        .landing-content {
+            text-align: center;
+            z-index: 10;
+            padding: 40px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .brand-title {
+            font-family: var(--font-heading);
+            font-weight: 900;
+            font-size: 5rem;
+            color: var(--col-white);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+        }
+
+        .brand-subtitle {
+            font-family: var(--font-body);
+            font-size: 1.25rem;
+            color: var(--col-bg-crema);
+            margin-bottom: 60px;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+
+        /* --- BUTTON --- */
+        .btn-start {
+            display: inline-block;
+            padding: 20px 48px;
+            background-color: var(--col-bg-crema);
+            color: var(--col-primary-brown);
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            border: 2px solid transparent;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background-color: var(--col-white);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .brand-title { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="fixed-background"></div>
+    <div id="overlay"></div>
+
+    <div class="landing-content">
+        <h1 class="brand-title">ByteSize</h1>
+        <p class="brand-subtitle">Data Driven Insights for Modern Cafes</p>
+        
+        <a href="onboarding.html" class="btn-start">Let's Get Started</a>
+    </div>
+
+</body>
+</html>
